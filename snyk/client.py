@@ -82,7 +82,8 @@ class SnykClient(object):
             raise SnykHTTPError(resp)
         return resp
 
-    def post(self, path: str, body: Any, headers: dict = {}) -> requests.Response:
+    def post(self, path: str, body: Any, headers: Optional[dict] = None) -> requests.Response:
+        headers = {} if headers is None else headers
         url = f"{self.api_url}/{path}"
         logger.debug(f"POST: {url}")
 
@@ -103,7 +104,8 @@ class SnykClient(object):
 
         return resp
 
-    def put(self, path: str, body: Any, headers: dict = {}) -> requests.Response:
+    def put(self, path: str, body: Any, headers: Optional[dict] = None) -> requests.Response:
+        headers = {} if headers is None else headers
         url = "%s/%s" % (self.api_url, path)
         logger.debug("PUT: %s" % url)
 
@@ -215,7 +217,7 @@ class SnykClient(object):
 
         return resp
 
-    def get_rest_pages(self, path: str, params: dict = {}) -> List:
+    def get_rest_pages(self, path: str, params: Optional[dict] = None) -> List:
         """
         Helper function to collect paginated responses from the rest API into a single
         list.
@@ -223,6 +225,7 @@ class SnykClient(object):
         This collects the "data" list from the first response and then appends the
         any further "data" lists if a next link is found in the links field.
         """
+        params = {} if params is None else params
         first_page_response = self.get(path, params)
         page_data = first_page_response.json()
         return_data = page_data["data"]

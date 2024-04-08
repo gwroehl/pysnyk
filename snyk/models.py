@@ -394,8 +394,9 @@ class Integration(DataClassJSONMixin):
         return bool(self.organization.client.post(path, payload))
 
     def import_git(
-        self, owner: str, name: str, branch: str = "master", files: List[str] = []
+        self, owner: str, name: str, branch: str = "master", files: Optional[List[str]] = None
     ):
+        files = [] if files is None else files
         return self._import(
             {
                 "target": {"owner": owner, "name": name, "branch": branch},
@@ -409,7 +410,8 @@ class Integration(DataClassJSONMixin):
 
         return self._import({"target": {"name": name}})
 
-    def import_gitlab(self, id: str, branch: str = "master", files: List[str] = []):
+    def import_gitlab(self, id: str, branch: str = "master", files: Optional[List[str]] = None):
+        files = [] if files is None else files
         return self._import(
             {
                 "target": {"id": id, "branch": branch},
@@ -418,8 +420,9 @@ class Integration(DataClassJSONMixin):
         )
 
     def import_bitbucket(
-        self, project_key: str, name: str, repo_slug: str, files: List[str] = []
+        self, project_key: str, name: str, repo_slug: str, files: Optional[List[str]] = None
     ):
+        files = [] if files is None else files
         return self._import(
             {
                 "target": {
@@ -431,7 +434,8 @@ class Integration(DataClassJSONMixin):
             }
         )
 
-    def import_heroku(self, app_id: str, slug_id: str, files: List[str] = []):
+    def import_heroku(self, app_id: str, slug_id: str, files: Optional[List[str]] = None):
+        files = [] if files is None else files
         return self._import(
             {
                 "target": {"appId": app_id, "slugId": slug_id},
@@ -439,7 +443,8 @@ class Integration(DataClassJSONMixin):
             }
         )
 
-    def import_lambda(self, function_id: str, files: List[str] = []):
+    def import_lambda(self, function_id: str, files: Optional[List[str]] = None):
+        files = [] if files is None else files
         return self._import(
             {
                 "target": {"functionId": function_id},
@@ -447,7 +452,8 @@ class Integration(DataClassJSONMixin):
             }
         )
 
-    def import_cloudfoundry(self, app_id: str, files: List[str] = []):
+    def import_cloudfoundry(self, app_id: str, files: Optional[List[str]] = None):
+        files = [] if files is None else files
         return self._import(
             {"target": {"appId": app_id}, "files": [{"path": x} for x in files]}
         )

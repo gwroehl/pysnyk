@@ -1,6 +1,6 @@
 import abc
 import json
-from typing import Any, Dict, List
+from typing import Optional, Any, Dict, List
 
 from deprecation import deprecated  # type: ignore
 
@@ -190,7 +190,8 @@ class ProjectManager(Manager):
             .get("id"),
         }
 
-    def _query(self, tags: List[Dict[str, str]] = [], next_url: str = None):
+    def _query(self, tags: Optional[List[Dict[str, str]]] = None, next_url: str = None):
+        tags = [] if tags is None else tags
         projects = []
         params: dict = {"limit": 100}
         if self.instance:
@@ -248,7 +249,8 @@ class ProjectManager(Manager):
     def all(self):
         return self._query()
 
-    def filter(self, tags: List[Dict[str, str]] = [], **kwargs: Any):
+    def filter(self, tags: Optional[List[Dict[str, str]]] = None, **kwargs: Any):
+        tags = [] if tags is None else tags
         if tags:
             return self._filter_by_kwargs(self._query(tags), **kwargs)
         else:

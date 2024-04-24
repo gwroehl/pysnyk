@@ -105,7 +105,7 @@ class SnykClient(object):
 
     def put(self, path: str, body: Any, headers: dict = {}) -> requests.Response:
         url = "%s/%s" % (self.api_url, path)
-        logger.debug("PUT: %s" % url)
+        logger.debug("PUT: %s", url)
 
         resp = retry_call(
             self.request,
